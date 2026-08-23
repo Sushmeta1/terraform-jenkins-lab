@@ -22,9 +22,15 @@ pipeline {
 
         stage('Validate') {
             steps {
-                bat 'terraform fmt -check -recursive -diff'
-                bat 'terraform init -input=false'
-                bat 'terraform validate'
+                withCredentials([usernamePassword(
+                    credentialsId: 'aws-credentials',
+                    usernameVariable: 'AWS_ACCESS_KEY_ID',
+                    passwordVariable: 'AWS_SECRET_ACCESS_KEY'
+                )]) {
+                    bat 'terraform fmt -check -recursive -diff'
+                    bat 'terraform init -input=false'
+                    bat 'terraform validate'
+                }
             }
         }
 
