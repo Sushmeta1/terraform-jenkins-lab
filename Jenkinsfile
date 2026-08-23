@@ -7,11 +7,14 @@ pipeline {
         buildDiscarder(logRotator(numToKeepStr: '20'))
     }
 
+    triggers {
+        pollSCM('H/5 * * * *')
+    }
+
     environment {
         AWS_DEFAULT_REGION = 'ap-south-1'
         TF_IN_AUTOMATION = 'true'
     }
-
     stages {
 
         stage('Checkout') {
